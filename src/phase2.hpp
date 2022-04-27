@@ -21,6 +21,7 @@
 #include "bitfield.hpp"
 #include "bitfield_index.hpp"
 #include "progress.hpp"
+#include "phases.hpp"
 
 struct Phase2Results
 {
