@@ -11,7 +11,7 @@
 
 # CC compiler options:
 CC=g++
-CC_FLAGS=-std=c++11 -Wall
+CC_FLAGS=-std=c++17 -Wall
 CC_LIBS=
 
 ##########################################################
@@ -51,7 +51,8 @@ INC_DIR = include
 EXE = run_test
 
 # Object files:
-OBJS = $(OBJ_DIR)/main.o $(OBJ_DIR)/cuda_kernel.o $(OBJ_DIR)/chacha8.o
+OBJS = $(OBJ_DIR)/main.o 
+# $(OBJ_DIR)/cuda_kernel.o $(OBJ_DIR)/chacha8.o
 
 ##########################################################
 
