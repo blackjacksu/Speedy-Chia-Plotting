@@ -75,6 +75,9 @@ $(EXE) : $(OBJS)
 $(OBJ_DIR)/%.o : %.cpp
 	$(CC) $(CC_FLAGS) -c $< -o $@
 
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp
+	$(CC) $(CC_FLAGS) -c $< -o $@
+
 # # Compile C++ source files to object files:
 # $(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp include/%.h
 # 	$(CC) $(CC_FLAGS) -c $< -o $@
