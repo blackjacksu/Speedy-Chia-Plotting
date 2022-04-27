@@ -21,6 +21,7 @@
 #include "pos_constants.hpp"
 #include "sort_manager.hpp"
 #include "progress.hpp"
+#include "phase2.hpp"
 
 // Results of phase 3. These are passed into Phase 4, so the checkpoint tables
 // can be properly built.
