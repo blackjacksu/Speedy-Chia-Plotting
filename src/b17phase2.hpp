@@ -18,6 +18,8 @@
 #include "disk.hpp"
 #include "entry_sizes.hpp"
 #include "b17sort_manager.hpp"
+#include "phases.hpp"
+#include "progress.hpp"
 
 // Backpropagate takes in as input, a file on which forward propagation has been done.
 // The purpose of backpropagate is to eliminate any dead entries that don't contribute

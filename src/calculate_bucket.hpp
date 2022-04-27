@@ -86,7 +86,7 @@ public:
         memcpy(enc_key + 1, orig_key, 31);
 
         // Setup ChaCha8 context with zero-filled IV
-        chacha8_keysetup(&this->enc_ctx_, enc_key, 256, NULL);
+        //chacha8_keysetup(&this->enc_ctx_, enc_key, 256, NULL);
     }
 
     inline ~F1Calculator()
@@ -130,13 +130,13 @@ public:
         // initial state (4x4 matrix of 32-bit words). This is similar to
         // encrypting plaintext at a given offset, but we have no
         // plaintext, so no XORing at the end.
-        chacha8_get_keystream(&this->enc_ctx_, counter, 1, ciphertext_bytes);
+        //chacha8_get_keystream(&this->enc_ctx_, counter, 1, ciphertext_bytes);
         Bits ciphertext0(ciphertext_bytes, block_size_bits / 8, block_size_bits);
 
         if (spans_two_blocks) {
             // Performs another encryption if necessary
             ++counter;
-            chacha8_get_keystream(&this->enc_ctx_, counter, 1, ciphertext_bytes);
+            //chacha8_get_keystream(&this->enc_ctx_, counter, 1, ciphertext_bytes);
             Bits ciphertext1(ciphertext_bytes, block_size_bits / 8, block_size_bits);
             output_bits = ciphertext0.Slice(bits_before_L) +
                           ciphertext1.Slice(0, num_output_bits - bits_of_L);
@@ -172,7 +172,7 @@ public:
 
         assert(n <= (1U << kBatchSizes));
 
-        chacha8_get_keystream(&this->enc_ctx_, start, num_blocks, buf_);
+        //chacha8_get_keystream(&this->enc_ctx_, start, num_blocks, buf_);
         for (uint64_t x = first_x; x < first_x + n; x++) {
             uint64_t y = Util::SliceInt64FromBytes(buf_, start_bit, k_);
 
