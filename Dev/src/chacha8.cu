@@ -23,6 +23,7 @@
 static const char sigma[16] = "expand 32-byte k";
 static const char tau[16] = "expand 16-byte k";
 
+__global__
 void chacha8_keysetup(struct chacha8_ctx *x, const uint8_t *k, uint32_t kbits, const uint8_t *iv)
 {
     const char *constants;
@@ -54,6 +55,7 @@ void chacha8_keysetup(struct chacha8_ctx *x, const uint8_t *k, uint32_t kbits, c
     }
 }
 
+__global__
 void chacha8_get_keystream(const struct chacha8_ctx *x, uint64_t pos, uint32_t n_blocks, uint8_t *c)
 {
     uint32_t x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15;
@@ -146,4 +148,49 @@ void chacha8_get_keystream(const struct chacha8_ctx *x, uint64_t pos, uint32_t n
 
         c += 64;
     }
+}
+
+extern "C"
+void perform_get_keystream(const struct chacha8_ctx *_x, uint64_t _pos, uint32_t _n_blocks, uint8_t *_c, const uint8_t N)
+{
+    // Device memory 
+
+    struct chacha8_ctx *x;    
+    uint64_t pos;
+    uint32_t n_blocks;
+    uint8_t c[64];
+
+    cudaEvent_t start, stop;
+    float       elapsedTime;
+
+    /* begin timing */
+    cudaEventCreate(&start);
+    cudaEventRecord(start, 0);
+
+    cudaMalloc(x, sizeof(chacha8_ctx));
+    cudaMalloc(pos, sizeof(uint64_t));
+    cudaMalloc(n_blocks, sizeof(uint32_t));
+    // cudaMalloc(&c, sizeof(uint8_t));
+
+    cudaMemcpy(x, _x, sizeof(chacha8_ctx), cudaMemcpyHostToDevice);
+    cudaMemcpy(pos, _pos, sizeof(uint64_t), cudaMemcpyHostToDevice);
+    cudaMemcpy(n_blocks, _n_blocks, sizeof(uint32_t), cudaMemcpyHostToDevice);
+
+    // dim3 threadsPerBlock(8, 8, 8);
+    // dim3 numBlocks(N / threadsPerBlock.x, N / threadsPerBlock.y, N / threadsPerBlock.z);
+    int threadsPerBlock = 1;
+    int numBlocks = 1;
+
+
+    chacha8_get_keystream <<<numBlocks, threadsPerBlock>>>(x, pos, n_blocks, c);
+    cudaMemcpy(_c, c, sizeof(uint8_t) * 64, cudaMemcpyDeviceToHost);
+    /* end timing */
+    cudaEventCreate(&stop);
+    cudaEventRecord(stop, 0);
+    cudaEventSynchronize(stop);
+
+    cudaEventElapsedTime(&elapsedTime, start, stop);
+    printf("Execution time: %f seconds\n", elapsedTime / 1000);
+    cudaFree(x);
+    cudaFree(pos);
 }
