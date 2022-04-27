@@ -54,7 +54,7 @@ EXE = run_test
 # Object files:
 OBJS = $(OBJ_DIR)/main.o $(OBJ_DIR)/b17phase2.o $(OBJ_DIR)/b17phase3.o $(OBJ_DIR)/b17phase4.o \
 		$(OBJ_DIR)/b17sort_manager.o $(OBJ_DIR)/bitfield.o $(OBJ_DIR)/bitfield_index.o \
-		$(OBJ_DIR)/bits.o $(OBJ_DIR)/ccalculate_bucket.o $(OBJ_DIR)/chia_filesystem.o \
+		$(OBJ_DIR)/bits.o $(OBJ_DIR)/calculate_bucket.o $(OBJ_DIR)/chia_filesystem.o \
 		$(OBJ_DIR)/cli.o $(OBJ_DIR)/disk.o $(OBJ_DIR)/encoding.o $(OBJ_DIR)/entry_sizes.o \
 		$(OBJ_DIR)/exception.o $(OBJ_DIR)/phase1.o $(OBJ_DIR)/phase2.o $(OBJ_DIR)/phase3.o \
 		$(OBJ_DIR)/phase.o $(OBJ_DIR)/plotter_disk.o $(OBJ_DIR)/pos_constants.o $(OBJ_DIR)/progress.o \
