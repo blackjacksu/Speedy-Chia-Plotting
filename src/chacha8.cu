@@ -25,12 +25,13 @@
     c = PLUS(c, d);              \
     b = ROTATE(XOR(b, c), 7)
 
-static const char sigma[17] = "expand 32-byte k";
-static const char tau[17] = "expand 16-byte k";
+
 
 __global__ void chacha8_keysetup(struct chacha8_ctx *x, const uint8_t *k, uint32_t kbits, const uint8_t *iv)
 {
     const char *constants;
+    static const char sigma[17] = "expand 32-byte k";
+    static const char tau[17] = "expand 16-byte k";
 
     x->input[4] = U8TO32_LITTLE(k + 0);
     x->input[5] = U8TO32_LITTLE(k + 4);
