@@ -1,4 +1,6 @@
-#include "chacha8.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #define U32TO32_LITTLE(v) (v)
 #define U8TO32_LITTLE(p) (*(const uint32_t *)(p))
@@ -20,14 +22,16 @@
     c = PLUS(c, d);              \
     b = ROTATE(XOR(b, c), 7)
 
-static const char sigma[16] = "expand 32-byte k";
-static const char tau[16] = "expand 16-byte k";
+struct chacha8_ctx {
+    uint32_t input[16];
+};
 
-__global__
-void chacha8_keysetup(struct chacha8_ctx *x, const uint8_t *k, uint32_t kbits, const uint8_t *iv)
+__global__ void chacha8_keysetup(struct chacha8_ctx *x, const uint8_t *k, uint32_t kbits, const uint8_t *iv)
 {
     const char *constants;
-
+    static const char sigma[17] = "expand 32-byte k";
+    static const char tau[17] = "expand 16-byte k";
+    
     x->input[4] = U8TO32_LITTLE(k + 0);
     x->input[5] = U8TO32_LITTLE(k + 4);
     x->input[6] = U8TO32_LITTLE(k + 8);
@@ -55,8 +59,7 @@ void chacha8_keysetup(struct chacha8_ctx *x, const uint8_t *k, uint32_t kbits, c
     }
 }
 
-__global__
-void chacha8_get_keystream(const struct chacha8_ctx *x, uint64_t pos, uint32_t n_blocks, uint8_t *c)
+__global__ void chacha8_get_keystream(const struct chacha8_ctx *x, uint64_t pos, uint32_t n_blocks, uint8_t *c)
 {
     uint32_t x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15;
     uint32_t j0, j1, j2, j3, j4, j5, j6, j7, j8, j9, j10, j11, j12, j13, j14, j15;
@@ -150,8 +153,7 @@ void chacha8_get_keystream(const struct chacha8_ctx *x, uint64_t pos, uint32_t n
     }
 }
 
-extern "C"
-void perform_get_keystream(const struct chacha8_ctx *_x, uint64_t _pos, uint32_t _n_blocks, uint8_t *_c, const uint8_t N)
+extern "C" void perform_get_keystream(const struct chacha8_ctx *_x, uint64_t _pos, uint32_t _n_blocks, uint8_t *_c, const uint8_t N)
 {
     // Device memory 
 
@@ -167,14 +169,14 @@ void perform_get_keystream(const struct chacha8_ctx *_x, uint64_t _pos, uint32_t
     cudaEventCreate(&start);
     cudaEventRecord(start, 0);
 
-    cudaMalloc(x, sizeof(chacha8_ctx));
-    cudaMalloc(pos, sizeof(uint64_t));
-    cudaMalloc(n_blocks, sizeof(uint32_t));
+    //cudaMalloc(x, sizeof(chacha8_ctx));
+    //cudaMalloc(pos, sizeof(uint64_t));
+    //cudaMalloc(n_blocks, sizeof(uint32_t));
     // cudaMalloc(&c, sizeof(uint8_t));
 
     cudaMemcpy(x, _x, sizeof(chacha8_ctx), cudaMemcpyHostToDevice);
-    cudaMemcpy(pos, _pos, sizeof(uint64_t), cudaMemcpyHostToDevice);
-    cudaMemcpy(n_blocks, _n_blocks, sizeof(uint32_t), cudaMemcpyHostToDevice);
+    cudaMemcpy(&pos, &_pos, sizeof(uint64_t), cudaMemcpyHostToDevice);
+    cudaMemcpy(&n_blocks, &_n_blocks, sizeof(uint32_t), cudaMemcpyHostToDevice);
 
     // dim3 threadsPerBlock(8, 8, 8);
     // dim3 numBlocks(N / threadsPerBlock.x, N / threadsPerBlock.y, N / threadsPerBlock.z);
@@ -191,6 +193,6 @@ void perform_get_keystream(const struct chacha8_ctx *_x, uint64_t _pos, uint32_t
 
     cudaEventElapsedTime(&elapsedTime, start, stop);
     printf("Execution time: %f seconds\n", elapsedTime / 1000);
-    cudaFree(x);
-    cudaFree(pos);
+    cudaFree(&x);
+    cudaFree(&pos);
 }

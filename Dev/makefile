@@ -1,9 +1,10 @@
 SM := 35
 
-GC := gcc
-GCC := g++
+GCC := gcc
+GPP := g++
 NVCC := nvcc
 
+CPPFLAGS = -std=c++11
 CFLAGS = -std=c99
 NVCCFLAGS = -O3
 
@@ -14,7 +15,7 @@ BUILDDIR = build
 CHIASRCDIR = src
 
 TARGET = ChiaGPUPlotter
-all: $(BUILDDIR)/$(TARGET)
+all: $(TARGET)
 
 $(TARGET): $(BUILDDIR)/dlink.o $(BUILDDIR)/main.o $(BUILDDIR)/$(TARGET).o
 	$(GCC) $(CFLAGS) $^ -o $@ $(LIB_FLAGS)
@@ -22,11 +23,11 @@ $(TARGET): $(BUILDDIR)/dlink.o $(BUILDDIR)/main.o $(BUILDDIR)/$(TARGET).o
 $(BUILDDIR)/dlink.o: $(BUILDDIR)/$(TARGET).o 
 	$(NVCC) $(NVCCFLAGS) $^ -o $@ $(GENCODE_FLAGS) -dlink
 
-$(BUILDDIR)/main.o: main.cpp
+$(BUILDDIR)/main.o: main.c
 	$(GCC) $(CFLAGS) -c $< -o $@
 
 ## The following are source libraries
-$(BUILDDIR)/$(TARGET).o: $(CHIASRCDIR)/chacha8.cu $(CHIASRCDIR)/chacha8.h
+$(BUILDDIR)/$(TARGET).o: $(CHIASRCDIR)/chacha8.cu
 	$(NVCC) $(NVCCFLAGS) -c $< -o $@ $(GENCODE_FLAGS) 
 
 clean:
