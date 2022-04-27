@@ -5,6 +5,15 @@
 #include "include/cuda_kernel.cuh"
 #include "include/chacha8.cuh"
 
+// #include "../lib/include/picosha2.hpp"
+#include "src/calculate_bucket.hpp"
+#include "src/disk.hpp"
+#include "src/plotter_disk.hpp"
+#include "src/prover_disk.hpp"
+#include "src/sort_manager.hpp"
+#include "src/verifier.hpp"
+
+
 
 int main() {
 

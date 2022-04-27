@@ -11,7 +11,7 @@
 
 # CC compiler options:
 CC=g++
-CC_FLAGS=
+CC_FLAGS=-std=c++11 -Wall
 CC_LIBS=
 
 ##########################################################
