@@ -27,7 +27,7 @@
 
 #include "b3/blake3.h"
 #include "bits.hpp"
-#include "../include/chacha8.h"
+#include "chacha8.h"
 #include "pos_constants.hpp"
 #include "util.hpp"
 
