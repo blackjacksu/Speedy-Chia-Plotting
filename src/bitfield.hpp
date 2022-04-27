@@ -15,6 +15,8 @@
 #pragma once
 
 #include <memory>
+#include <cassert>
+#include "util.hpp"
 
 struct bitfield
 {
