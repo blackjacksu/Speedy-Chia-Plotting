@@ -12,30 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SRC_CPP_B17PHASE3_HPP_
-#define SRC_CPP_B17PHASE3_HPP_
-
-#include "encoding.hpp"
-#include "entry_sizes.hpp"
-#include "exceptions.hpp"
-#include "pos_constants.hpp"
-#include "b17sort_manager.hpp"
-#include "phases.hpp"
-#include "phase3.hpp"
 
 
-// Results of phase 3. These are passed into Phase 4, so the checkpoint tables
-// can be properly built.
-struct b17Phase3Results {
-    // Pointers to each table start byet in the final file
-    std::vector<uint64_t> final_table_begin_pointers;
-    // Number of entries written for f7
-    uint64_t final_entries_written;
-    uint32_t right_entry_size_bits;
+#include "../include/b17phase3.h"
 
-    uint32_t header_size;
-    std::unique_ptr<b17SortManager> table7_sm;
-};
+
+
 
 // Compresses the plot file tables into the final file. In order to do this, entries must be
 // reorganized from the (pos, offset) bucket sorting order, to a more free line_point sorting
@@ -470,5 +452,3 @@ b17Phase3Results b17RunPhase3(
         header_size,
         std::move(L_sort_manager)};
 }
-
-#endif  // SRC_CPP_PHASE3_HPP

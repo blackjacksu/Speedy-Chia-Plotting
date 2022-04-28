@@ -12,14 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SRC_CPP_B17PHASE2_HPP_
-#define SRC_CPP_B17PHASE2_HPP_
 
-#include "disk.hpp"
-#include "entry_sizes.hpp"
-#include "b17sort_manager.hpp"
-#include "phases.hpp"
-#include "progress.hpp"
+#include "../include/b17phase2.h"
 
 // Backpropagate takes in as input, a file on which forward propagation has been done.
 // The purpose of backpropagate is to eliminate any dead entries that don't contribute
@@ -418,4 +412,3 @@ std::vector<uint64_t> b17RunPhase2(
     return new_table_sizes;
 }
 
-#endif  // SRC_CPP_PHASE2_HPP
