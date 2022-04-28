@@ -3,7 +3,7 @@
 ## USER SPECIFIC DIRECTORIES ##
 
 # CUDA directory:
-# CUDA_ROOT_DIR=/usr/local/cuda
+CUDA_ROOT_DIR=/sw/eb/sw/CUDA/11.4.1
 
 ##########################################################
 
@@ -20,7 +20,7 @@ CC_LIBS=
 
 # NVCC compiler options:
 NVCC=nvcc
-NVCC_FLAGS=
+NVCC_FLAGS=-O3
 NVCC_LIBS=
 
 # CUDA library directory:
@@ -28,7 +28,14 @@ CUDA_LIB_DIR= -L$(CUDA_ROOT_DIR)/lib64
 # CUDA include directory:
 CUDA_INC_DIR= -I$(CUDA_ROOT_DIR)/include
 # CUDA linking libraries:
-CUDA_LINK_LIBS= -lcudart
+CUDA_LINK_LIBS= -lcudadevrt -lcudart
+
+##########################################################
+
+## GEN CODE OPTIONS ##
+SM := 35
+# Gen code options:
+GENCODE_FLAGS = -gencode arch=compute_$(SM),code=sm_$(SM)
 
 ##########################################################
 
@@ -49,7 +56,7 @@ INC_DIR = include
 ## Make variables ##
 
 # Target executable name:
-EXE = run_test
+EXE = ChiaGPUPlotter
 
 # Object files:
 OBJS = $(OBJ_DIR)/main.o $(OBJ_DIR)/b17phase2.o $(OBJ_DIR)/b17phase3.o $(OBJ_DIR)/b17phase4.o \
@@ -61,7 +68,7 @@ OBJS = $(OBJ_DIR)/main.o $(OBJ_DIR)/b17phase2.o $(OBJ_DIR)/b17phase3.o $(OBJ_DIR
 		$(OBJ_DIR)/prover_disk.o $(OBJ_DIR)/quicksort.o $(OBJ_DIR)/sort_manager.o $(OBJ_DIR)/threading.o \
 		$(OBJ_DIR)/uniformsort.o $(OBJ_DIR)/util.o $(OBJ_DIR)/verifier.o $(OBJ_DIR)/exceptions.o 
 
-# $(OBJ_DIR)/cuda_kernel.o $(OBJ_DIR)/chacha8.o $(OBJ_DIR)/cli.o 
+CUDA_OBJS = $(OBJ_DIR)/cuda_kernel.o $(OBJ_DIR)/chacha8.o 
 
 ##########################################################
 
@@ -69,7 +76,7 @@ OBJS = $(OBJ_DIR)/main.o $(OBJ_DIR)/b17phase2.o $(OBJ_DIR)/b17phase3.o $(OBJ_DIR
 
 # Link c++ and CUDA compiled object files to target executable:
 $(EXE) : $(OBJS)
-	$(CC) $(CC_FLAGS) $(OBJS) -o $@ $(CUDA_INC_DIR) $(CUDA_LIB_DIR) $(CUDA_LINK_LIBS)
+	$(CC) $(CC_FLAGS) $(OBJS) -o $@ $(CUDA_LINK_LIBS) 
 
 # Compile main .cpp file to object files:
 $(OBJ_DIR)/%.o : %.cpp
