@@ -5,7 +5,7 @@
 #include "include/cuda_kernel.cuh"
 #include "include/chacha8.cuh"
 
-#include "../lib/include/picosha2.hpp"
+#include "lib/include/picosha2.hpp"
 #include "src/calculate_bucket.hpp"
 #include "src/disk.hpp"
 #include "src/plotter_disk.hpp"
