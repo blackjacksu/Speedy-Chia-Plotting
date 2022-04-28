@@ -13,7 +13,7 @@
 // #include "src/sort_manager.hpp"
 // #include "src/verifier.hpp"
 
-#include "progress.hpp"
+#include "src/progress.hpp"
 
 int main() {
 
