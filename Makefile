@@ -87,13 +87,13 @@ $(OBJ_DIR)/%.o : %.cpp
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp
 	$(CC) $(CC_FLAGS) -c $< -o $@
 
-# # Compile C++ source files to object files:
-# $(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp include/%.h
-# 	$(CC) $(CC_FLAGS) -c $< -o $@
-
-# Compile HPP source files to object files:
-$(OBJ_DIR)/%.o : $(SRC_DIR)/%.hpp
+# Compile C++ source files to object files:
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp include/%.h
 	$(CC) $(CC_FLAGS) -c $< -o $@
+
+# # Compile HPP source files to object files:
+# $(OBJ_DIR)/%.o : $(SRC_DIR)/%.hpp
+# 	$(CC) $(CC_FLAGS) -c $< -o $@
 
 # Compile CUDA source files to object files:
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.cu $(INC_DIR)/%.cuh
