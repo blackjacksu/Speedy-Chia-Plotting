@@ -59,16 +59,17 @@ INC_DIR = include
 EXE = ChiaGPUPlotter
 
 # Object files:
-OBJS = $(OBJ_DIR)/main.o $(OBJ_DIR)/b17phase2.o $(OBJ_DIR)/b17phase3.o $(OBJ_DIR)/b17phase4.o \
-		$(OBJ_DIR)/b17sort_manager.o $(OBJ_DIR)/bitfield.o $(OBJ_DIR)/bitfield_index.o \
-		$(OBJ_DIR)/bits.o $(OBJ_DIR)/calculate_bucket.o $(OBJ_DIR)/chia_filesystem.o \
-		$(OBJ_DIR)/disk.o $(OBJ_DIR)/encoding.o $(OBJ_DIR)/entry_sizes.o \
-		$(OBJ_DIR)/phase1.o $(OBJ_DIR)/phase2.o $(OBJ_DIR)/phase3.o $(OBJ_DIR)/phase4.o \
-		$(OBJ_DIR)/phases.o $(OBJ_DIR)/plotter_disk.o $(OBJ_DIR)/pos_constants.o $(OBJ_DIR)/progress.o \
-		$(OBJ_DIR)/prover_disk.o $(OBJ_DIR)/quicksort.o $(OBJ_DIR)/sort_manager.o $(OBJ_DIR)/threading.o \
-		$(OBJ_DIR)/uniformsort.o $(OBJ_DIR)/util.o $(OBJ_DIR)/verifier.o $(OBJ_DIR)/exceptions.o 
+OBJS = $(OBJ_DIR)/main.o $(OBJ_DIR)/progress.o 
+# $(OBJ_DIR)/b17phase2.o $(OBJ_DIR)/b17phase3.o $(OBJ_DIR)/b17phase4.o \
+# 		$(OBJ_DIR)/b17sort_manager.o $(OBJ_DIR)/bitfield.o $(OBJ_DIR)/bitfield_index.o \
+# 		$(OBJ_DIR)/bits.o $(OBJ_DIR)/calculate_bucket.o $(OBJ_DIR)/chia_filesystem.o \
+# 		$(OBJ_DIR)/disk.o $(OBJ_DIR)/encoding.o $(OBJ_DIR)/entry_sizes.o \
+# 		$(OBJ_DIR)/phase1.o $(OBJ_DIR)/phase2.o $(OBJ_DIR)/phase3.o $(OBJ_DIR)/phase4.o \
+# 		$(OBJ_DIR)/phases.o $(OBJ_DIR)/plotter_disk.o $(OBJ_DIR)/pos_constants.o $(OBJ_DIR)/progress.o \
+# 		$(OBJ_DIR)/prover_disk.o $(OBJ_DIR)/quicksort.o $(OBJ_DIR)/sort_manager.o $(OBJ_DIR)/threading.o \
+# 		$(OBJ_DIR)/uniformsort.o $(OBJ_DIR)/util.o $(OBJ_DIR)/verifier.o $(OBJ_DIR)/exceptions.o 
 
-CUDA_OBJS = $(OBJ_DIR)/cuda_kernel.o $(OBJ_DIR)/chacha8.o 
+# CUDA_OBJS = $(OBJ_DIR)/cuda_kernel.o $(OBJ_DIR)/chacha8.o 
 
 ##########################################################
 
@@ -76,7 +77,8 @@ CUDA_OBJS = $(OBJ_DIR)/cuda_kernel.o $(OBJ_DIR)/chacha8.o
 
 # Link c++ and CUDA compiled object files to target executable:
 $(EXE) : $(OBJS)
-	$(CC) $(CC_FLAGS) $(OBJS) -o $@ $(CUDA_LINK_LIBS) 
+	$(CC) $(CC_FLAGS) $(OBJS) -o $@ 
+	# $(CUDA_LINK_LIBS) 
 
 # Compile main .cpp file to object files:
 $(OBJ_DIR)/%.o : %.cpp
