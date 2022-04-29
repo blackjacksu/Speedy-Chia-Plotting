@@ -12,16 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SRC_CPP_PHASE4_HPP_
-#define SRC_CPP_PHASE4_HPP_
-
-#include "disk.hpp"
-#include "encoding.hpp"
-#include "entry_sizes.hpp"
-#include "phase3.hpp"
-#include "pos_constants.hpp"
-#include "util.hpp"
-#include "progress.hpp"
+#include "../include/phase4.h"
 
 // Writes the checkpoint tables. The purpose of these tables, is to store a list of ~2^k values
 // of size k (the proof of space outputs from table 7), in a way where they can be looked up for
@@ -197,4 +188,5 @@ void RunPhase4(uint8_t k, uint8_t pos_size, FileDisk &tmp2_disk, Phase3Results &
     }
     std::cout << std::dec;
 }
-#endif  // SRC_CPP_PHASE4_HPP
+
+

@@ -12,29 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SRC_CPP_PHASE3_HPP_
-#define SRC_CPP_PHASE3_HPP_
-
-#include "encoding.hpp"
-#include "entry_sizes.hpp"
-#include "exceptions.hpp"
-#include "pos_constants.hpp"
-#include "sort_manager.hpp"
-#include "progress.hpp"
-#include "phase2.hpp"
-
-// Results of phase 3. These are passed into Phase 4, so the checkpoint tables
-// can be properly built.
-struct Phase3Results {
-    // Pointers to each table start byet in the final file
-    std::vector<uint64_t> final_table_begin_pointers;
-    // Number of entries written for f7
-    uint64_t final_entries_written;
-    uint32_t right_entry_size_bits;
-
-    uint32_t header_size;
-    std::unique_ptr<SortManager> table7_sm;
-};
+#include "../include/phase3.h"
 
 // This writes a number of entries into a file, in the final, optimized format. The park
 // contains a checkpoint value (which is a 2k bits line point), as well as EPP (entries per
@@ -523,4 +501,4 @@ Phase3Results RunPhase3(
         std::move(L_sort_manager)};
 }
 
-#endif  // SRC_CPP_PHASE3_HPP
+

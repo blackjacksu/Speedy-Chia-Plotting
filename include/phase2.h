@@ -1,0 +1,56 @@
+// Copyright 2018 Chia Network Inc
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#ifndef SRC_CPP_PHASE2_HPP_
+#define SRC_CPP_PHASE2_HPP_
+
+#include "disk.h"
+#include "entry_sizes.h"
+#include "sort_manager.h"
+#include "bitfield.h"
+#include "bitfield_index.h"
+#include "progress.h"
+#include "phases.h"
+
+struct Phase2Results
+{
+    Disk& disk_for_table(int const table_index)
+    {
+        if (table_index == 1) return table1;
+        else if (table_index == 7) return table7;
+        else return *output_files[table_index - 2];
+    }
+    FilteredDisk table1;
+    BufferedDisk table7;
+    std::vector<std::unique_ptr<SortManager>> output_files;
+    std::vector<uint64_t> table_sizes;
+};
+
+// Backpropagate takes in as input, a file on which forward propagation has been done.
+// The purpose of backpropagate is to eliminate any dead entries that don't contribute
+// to final values in f7, to minimize disk usage. A sort on disk is applied to each table,
+// so that they are sorted by position.
+Phase2Results RunPhase2(
+    std::vector<FileDisk> &tmp_1_disks,
+    std::vector<uint64_t> table_sizes,
+    uint8_t const k,
+    const uint8_t *id,
+    const std::string &tmp_dirname,
+    const std::string &filename,
+    uint64_t memory_size,
+    uint32_t const num_buckets,
+    uint32_t const log_num_buckets,
+    uint8_t const flags);
+
+#endif  // SRC_CPP_PHASE2_HPP

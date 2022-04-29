@@ -12,30 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SRC_CPP_PHASE2_HPP_
-#define SRC_CPP_PHASE2_HPP_
-
-#include "disk.hpp"
-#include "entry_sizes.hpp"
-#include "sort_manager.hpp"
-#include "bitfield.hpp"
-#include "bitfield_index.hpp"
-#include "progress.hpp"
-#include "phases.hpp"
-
-struct Phase2Results
-{
-    Disk& disk_for_table(int const table_index)
-    {
-        if (table_index == 1) return table1;
-        else if (table_index == 7) return table7;
-        else return *output_files[table_index - 2];
-    }
-    FilteredDisk table1;
-    BufferedDisk table7;
-    std::vector<std::unique_ptr<SortManager>> output_files;
-    std::vector<uint64_t> table_sizes;
-};
+#include "../include/phase2.h"
 
 // Backpropagate takes in as input, a file on which forward propagation has been done.
 // The purpose of backpropagate is to eliminate any dead entries that don't contribute
@@ -274,4 +251,3 @@ Phase2Results RunPhase2(
     };
 }
 
-#endif  // SRC_CPP_PHASE2_HPP
