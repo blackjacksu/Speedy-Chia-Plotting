@@ -12,135 +12,60 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SRC_CPP_UTIL_HPP_
-#define SRC_CPP_UTIL_HPP_
-
-#include <cassert>
-#include <chrono>
-#include <cstring>
-#include <fstream>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <numeric>
-#include <queue>
-#include <random>
-#include <set>
-#include <sstream>
-#include <string>
-#include <utility>
-#include <vector>
-
-template <typename Int, typename Int2>
-constexpr inline Int cdiv(Int a, Int2 b) { return (a + b - 1) / b; }
-
-#ifdef _WIN32
-#define NOMINMAX
-#include <windows.h>
-#include <processthreadsapi.h>
-#include "uint128_t.h"
-#else
-// __uint__128_t is only available in 64 bit architectures and on certain
-// compilers.
-typedef __uint128_t uint128_t;
-
-// Allows printing of uint128_t
-std::ostream &operator<<(std::ostream &strm, uint128_t const &v)
+#include "../include/util.h"
+void hi()
 {
-    strm << "uint128(" << (uint64_t)(v >> 64) << "," << (uint64_t)(v & (((uint128_t)1 << 64) - 1))
-         << ")";
-    return strm;
+    std::cout << "hello from Util" << std::endl;
 }
 
-#endif
-
-// compiler-specific byte swap macros.
-#if defined(_MSC_VER)
-
-#include <cstdlib>
-
-// https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/byteswap-uint64-byteswap-ulong-byteswap-ushort?view=msvc-160
-inline uint16_t bswap_16(uint16_t x) { return _byteswap_ushort(x); }
-inline uint32_t bswap_32(uint32_t x) { return _byteswap_ulong(x); }
-inline uint64_t bswap_64(uint64_t x) { return _byteswap_uint64(x); }
-
-#elif defined(__clang__) || defined(__GNUC__)
-
-inline uint16_t bswap_16(uint16_t x) { return __builtin_bswap16(x); }
-inline uint32_t bswap_32(uint32_t x) { return __builtin_bswap32(x); }
-inline uint64_t bswap_64(uint64_t x) { return __builtin_bswap64(x); }
-
-#else
-#error "unknown compiler, don't know how to swap bytes"
-#endif
-
-/* Platform-specific cpuid include. */
-#if defined(_WIN32)
-#include <intrin.h>
-#elif defined(__x86_64__)
-#include <cpuid.h>
-#endif
-
-class Timer {
-public:
-    Timer()
-    {
-        wall_clock_time_start_ = std::chrono::steady_clock::now();
+Timer::Timer()
+{
+    wall_clock_time_start_ = std::chrono::steady_clock::now();
 #if _WIN32
-        ::GetProcessTimes(::GetCurrentProcess(), &ft_[3], &ft_[2], &ft_[1], &ft_[0]);
+    ::GetProcessTimes(::GetCurrentProcess(), &ft_[3], &ft_[2], &ft_[1], &ft_[0]);
 #else
-        cpu_time_start_ = clock();
+    cpu_time_start_ = clock();
 #endif
-    }
+}
 
-    static char *GetNow()
-    {
-        auto now = std::chrono::system_clock::now();
-        auto tt = std::chrono::system_clock::to_time_t(now);
-        return ctime(&tt);  // ctime includes newline
-    }
+char * Timer::GetNow()
+{
+    auto now = std::chrono::system_clock::now();
+    auto tt = std::chrono::system_clock::to_time_t(now);
+    return ctime(&tt);  // ctime includes newline
+}
 
-    void PrintElapsed(const std::string &name) const
-    {
-        auto end = std::chrono::steady_clock::now();
-        auto wall_clock_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-                                 end - this->wall_clock_time_start_)
-                                 .count();
-
+void Timer::PrintElapsed(const std::string &name)
+{
+    auto end = std::chrono::steady_clock::now();
+    auto wall_clock_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                             end - this->wall_clock_time_start_)
+                             .count();
 #if _WIN32
-        FILETIME nowft_[6];
-        nowft_[0] = ft_[0];
-        nowft_[1] = ft_[1];
-
-        ::GetProcessTimes(::GetCurrentProcess(), &nowft_[5], &nowft_[4], &nowft_[3], &nowft_[2]);
-        ULARGE_INTEGER u[4];
-        for (size_t i = 0; i < 4; ++i) {
-            u[i].LowPart = nowft_[i].dwLowDateTime;
-            u[i].HighPart = nowft_[i].dwHighDateTime;
-        }
-        double user = (u[2].QuadPart - u[0].QuadPart) / 10000.0;
-        double kernel = (u[3].QuadPart - u[1].QuadPart) / 10000.0;
-        double cpu_time_ms = user + kernel;
-#else
-        double cpu_time_ms =
-            1000.0 * (static_cast<double>(clock()) - this->cpu_time_start_) / CLOCKS_PER_SEC;
-#endif
-
-        double cpu_ratio = static_cast<int>(10000 * (cpu_time_ms / wall_clock_ms)) / 100.0;
-
-        std::cout << name << " " << (wall_clock_ms / 1000.0) << " seconds. CPU (" << cpu_ratio
-                  << "%) " << Timer::GetNow();
+    FILETIME nowft_[6];
+    nowft_[0] = ft_[0];
+    nowft_[1] = ft_[1];
+    ::GetProcessTimes(::GetCurrentProcess(), &nowft_[5], &nowft_[4], &nowft_[3], &nowft_[2]);
+    ULARGE_INTEGER u[4];
+    for (size_t i = 0; i < 4; ++i) {
+        u[i].LowPart = nowft_[i].dwLowDateTime;
+        u[i].HighPart = nowft_[i].dwHighDateTime;
     }
-
-private:
-    std::chrono::time_point<std::chrono::steady_clock> wall_clock_time_start_;
-#if _WIN32
-    FILETIME ft_[4];
+    double user = (u[2].QuadPart - u[0].QuadPart) / 10000.0;
+    double kernel = (u[3].QuadPart - u[1].QuadPart) / 10000.0;
+    double cpu_time_ms = user + kernel;
 #else
-    clock_t cpu_time_start_;
+    double cpu_time_ms =
+        1000.0 * (static_cast<double>(clock()) - this->cpu_time_start_) / CLOCKS_PER_SEC;
 #endif
-
-};
+    double cpu_ratio = static_cast<int>(10000 * (cpu_time_ms / wall_clock_ms)) / 100.0;
+    std::cout << name << " " << (wall_clock_ms / 1000.0) << " seconds. CPU (" << cpu_ratio
+              << "%) " << Timer::GetNow();
+}
+    // inline void Util::hi()
+    // {
+    //     std::cout << "hello from Util" << std::endl;
+    // }
 
 namespace Util {
 
@@ -174,6 +99,8 @@ namespace Util {
         result[0] = input & 0xff;
         result[1] = input >> 8;
     }
+    
+
 
     inline uint16_t TwoBytesToInt(const uint8_t *bytes)
     {
@@ -374,5 +301,3 @@ namespace Util {
 #endif /* defined(_WIN32) ... defined(__x86_64__) */
     }
 }
-
-#endif  // SRC_CPP_UTIL_HPP_
