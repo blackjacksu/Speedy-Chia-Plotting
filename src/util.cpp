@@ -13,10 +13,7 @@
 // limitations under the License.
 
 #include "../include/util.h"
-void hi()
-{
-    std::cout << "hello from Util" << std::endl;
-}
+
 
 Timer::Timer()
 {
