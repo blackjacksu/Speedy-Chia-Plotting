@@ -15,11 +15,11 @@
 #include <ctime>
 #include <set>
 
-#include "cxxopts.hpp"
-#include "../lib/include/picosha2.hpp"
-#include "plotter_disk.hpp"
-#include "prover_disk.hpp"
-#include "verifier.hpp"
+// #include "cxxopts.hpp"
+// #include "../lib/include/picosha2.hpp"
+#include "include/plotter_disk.h"
+#include "include/prover_disk.h"
+#include "include/verifier.h"
 
 using std::string;
 using std::vector;
