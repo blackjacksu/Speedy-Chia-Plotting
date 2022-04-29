@@ -21,8 +21,8 @@
 #include <utility>
 #include <vector>
 
-#include "./util.hpp"
-#include "exceptions.hpp"
+#include "util.h"
+#include "exceptions.h"
 
 // 64 * 2^16. 2^17 values, each value can store 64 bits.
 #define kMaxSizeBits 8388608

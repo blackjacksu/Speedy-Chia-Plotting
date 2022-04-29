@@ -11,70 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+#include "../include/phase1.h"
 
-#ifndef SRC_CPP_PHASE1_HPP_
-#define SRC_CPP_PHASE1_HPP_
 
-#ifndef _WIN32
-#include <semaphore.h>
-#include <unistd.h>
-#endif
-
-#include <math.h>
-#include <stdio.h>
-
-#include <algorithm>
-#include <fstream>
-#include <iostream>
-#include <map>
-#include <string>
-#include <unordered_map>
-#include <unordered_set>
-#include <utility>
-#include <vector>
-#include <thread>
-#include <memory>
-#include <mutex>
-
-#include "chia_filesystem.hpp"
-
-#include "calculate_bucket.hpp"
-#include "entry_sizes.hpp"
-#include "exceptions.hpp"
-#include "pos_constants.hpp"
-#include "sort_manager.hpp"
-#include "threading.hpp"
-#include "util.hpp"
-#include "progress.hpp"
-#include "phases.hpp"
-
-struct THREADDATA {
-    int index;
-    Sem::type* mine;
-    Sem::type* theirs;
-    uint64_t right_entry_size_bytes;
-    uint8_t k;
-    uint8_t table_index;
-    uint8_t metadata_size;
-    uint32_t entry_size_bytes;
-    uint8_t pos_size;
-    uint64_t prevtableentries;
-    uint32_t compressed_entry_size_bytes;
-    std::vector<FileDisk>* ptmp_1_disks;
-};
-
-struct GlobalData {
-    uint64_t left_writer_count;
-    uint64_t right_writer_count;
-    uint64_t matches;
-    std::unique_ptr<SortManager> L_sort_manager;
-    std::unique_ptr<SortManager> R_sort_manager;
-    uint64_t left_writer_buf_entries;
-    uint64_t left_writer;
-    uint64_t right_writer;
-    uint64_t stripe_size;
-    uint8_t num_threads;
-};
 
 GlobalData globals;
 
