@@ -12,17 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SRC_CPP_QUICKSORT_HPP_
-#define SRC_CPP_QUICKSORT_HPP_
-
-#include <algorithm>
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <memory>
-
-#include "util.hpp"
+#include "../include/quicksort.h"
 
 namespace QuickSort {
 
@@ -97,4 +87,3 @@ namespace QuickSort {
 
 }
 
-#endif  // SRC_CPP_QUICKSORT_HPP_

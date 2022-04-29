@@ -21,8 +21,8 @@
 #include <string>
 #include <vector>
 
-#include "./disk.hpp"
-#include "./util.hpp"
+#include "./disk.h"
+#include "./util.h"
 
 namespace UniformSort {
 

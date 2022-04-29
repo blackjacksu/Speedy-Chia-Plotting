@@ -16,7 +16,7 @@
 
 #include <memory>
 #include <cassert>
-#include "util.hpp"
+#include "util.h"
 
 struct bitfield
 {
