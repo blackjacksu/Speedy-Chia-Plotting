@@ -50,7 +50,7 @@ class DiskProver {
 public:
     // The constructor opens the file, and reads the contents of the file header. The table pointers
     // will be used to find and seek to all seven tables, at the time of proving.
-    explicit DiskProver(const std::string& filename) : id(kIdLen);
+    explicit DiskProver(const std::string& filename);
 
     ~DiskProver();
 

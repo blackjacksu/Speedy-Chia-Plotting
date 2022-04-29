@@ -45,7 +45,6 @@
 #include "b17phase3.h"
 #include "phase4.h"
 #include "b17phase4.h"
-#include ""
 #include "sort_manager.h"
 #include "util.h"
 
@@ -67,11 +66,11 @@ public:
         uint32_t memo_len,
         const uint8_t* id,
         uint32_t id_len,
-        uint32_t buf_megabytes_input = 0,
-        uint32_t num_buckets_input = 0,
-        uint64_t stripe_size_input = 0,
-        uint8_t num_threads_input = 0,
-        uint8_t phases_flags = ENABLE_BITFIELD);
+        uint32_t buf_megabytes_input,
+        uint32_t num_buckets_input,
+        uint64_t stripe_size_input,
+        uint8_t num_threads_input,
+        uint8_t phases_flags);
 
 private:
     // Writes the plot file header to a file

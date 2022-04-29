@@ -53,16 +53,7 @@ public:
         const std::string &filename,
         uint32_t begin_bits,
         uint64_t const stripe_size,
-        strategy_t const sort_strategy = strategy_t::uniform)
-        : memory_size_(memory_size)
-        , entry_size_(entry_size)
-        , begin_bits_(begin_bits)
-        , log_num_buckets_(log_num_buckets)
-        , prev_bucket_buf_size(
-            2 * (stripe_size + 10 * (kBC / pow(2, kExtraBits))) * entry_size)
-        // 7 bytes head-room for SliceInt64FromBytes()
-        , entry_buf_(new uint8_t[entry_size + 7])
-        , strategy_(sort_strategy);
+        strategy_t const sort_strategy = strategy_t::uniform);
 
     void AddToCache(const Bits &entry);
 

@@ -151,7 +151,7 @@ inline void b17SortManager::FlushCache()
     }
 }
 
-~b17SortManager::b17SortManager()
+b17SortManager::~b17SortManager()
 {
     // Close and delete files in case we exit without doing the sort
     for (auto &fd : this->bucket_files) {

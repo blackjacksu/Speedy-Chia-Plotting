@@ -47,7 +47,7 @@ public:
 
     inline void AddToCache(const uint8_t *entry);
 
-    inline uint8_t *ReadEntry(uint64_t position, int quicksort = 0);
+    inline uint8_t *ReadEntry(uint64_t position, int quicksort);
 
     inline bool CloseToNewBucket(uint64_t position) const;
 

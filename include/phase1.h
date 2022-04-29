@@ -106,3 +106,5 @@ std::vector<uint64_t> RunPhase1(
     uint32_t const stripe_size,
     uint8_t const num_threads,
     uint8_t const flags);
+
+#endif
